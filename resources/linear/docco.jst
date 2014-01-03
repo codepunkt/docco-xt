@@ -4,8 +4,8 @@
 <head>
   <title><%= title %></title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
-  <link rel="stylesheet" media="all" href="<%= css %>" />
+  <link rel="stylesheet" media="all" href="<%= path.join(toRoot, 'public/stylesheets/normalize.css') %>" />
+  <link rel="stylesheet" media="all" href="<%= path.join(toRoot, path.basename(config.css)) %>" />
 </head>
 <body>
   <div class="container">
@@ -22,15 +22,15 @@
           <h1><%= title %></h1>
         <% } %>
 
-        <% if (sources.length > 1) { %>
+        <% if (config.sources.length > 1) { %>
           <div class="toc">
             <h3>Table of Contents</h3>
             <ol>
-              <% for (var i=0, l = sources.length; i < l; i++) { %>
-                <% var source = sources[i]; %>
+              <% for (var i=0, l = config.sources.length; i < l; i++) { %>
+                <% var source = config.sources[i]; %>
                 <li>
-                  <a class="source" href="<%= path.basename(destination(source)) %>">
-                    <%= path.basename(source) %>
+                  <a class="source" href="<%= path.join(toRoot, '..', destination(source)) %>">
+                    <%= config.basedir ? path.relative(config.basedir, source) : path.basename(source) %>
                   </a>
                 </li>
               <% } %>

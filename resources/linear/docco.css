@@ -47,6 +47,7 @@ body {
   background: url('public/images/gray.png') #fff;
   background-size: 322px;
   margin: 0;
+  tab-size: 2;
 }
 
 hr {
@@ -178,7 +179,7 @@ ul.sections {
   transition: max-height 1s;
 }
   .header:hover .toc {
-    max-height: 500px;
+    max-height: 9999px;
   }
   .toc h3 {
     margin-top: 20px;

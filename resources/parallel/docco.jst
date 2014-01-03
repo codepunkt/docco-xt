@@ -5,22 +5,23 @@
   <title><%= title %></title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="<%= css %>" />
+  <link rel="stylesheet" media="all" href="<%= path.join(toOutput, path.basename(config.css)) %>" />
 </head>
 <body>
   <div id="container">
     <div id="background"></div>
-    <% if (sources.length > 1) { %>
+    <% if (config.sources.length > 1) { %>
       <ul id="jump_to">
         <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
+          <div class="large">Filename <input id="fileSearch" type="text" placeholder="Search" autocomplete="off"/></div>
           <div id="jump_wrapper">
-          <div id="jump_page">
-            <% for (var i=0, l=sources.length; i<l; i++) { %>
-              <% var source = sources[i]; %>
-              <a class="source" href="<%= path.basename(destination(source)) %>">
-                <%= path.basename(source) %>
+          <div id="jump_page"></div>
+          <div id="jump_page_hidden">
+            <% for (var i=0, l=config.sources.length; i<l; i++) { %>
+              <% var src = config.sources[i]; %>
+              <% var name = config.basedir ? path.relative(config.basedir, src) : path.basename(src); %>
+              <a class="source" data-name="<%= name %>" href="<%= path.join(toOutput, path.relative(output, destination(src))) %>">
+                <%= name %>
               </a>
             <% } %>
           </div>
@@ -32,6 +33,9 @@
           <li id="title">
               <div class="annotation">
                   <h1><%= title %></h1>
+                  <% if (config.basedir) { %>
+                    <div><%= path.relative(config.basedir, source) %></div>
+                  <% } %>
               </div>
           </li>
         <% } %>
@@ -52,5 +56,15 @@
         <% } %>
     </ul>
   </div>
+  <script src="<%= path.join(toOutput, 'public/javascripts/docco.js') %>"></script>
+  <script>
+    window.files = [];
+    <% if (config.sources.length > 1) { %>
+      <% for (var i=0, l=config.sources.length; i<l; i++) { %>
+        <% var src = config.sources[i]; %>
+        files.push('<%= config.basedir ? path.relative(config.basedir, src) : path.basename(src) %>');
+      <% } %>
+    <% } %>
+  </script>
 </body>
 </html>

@@ -1,30 +1,38 @@
- ____
-/\  _`\
-\ \ \/\ \        ___         ___         ___         ___
- \ \ \ \ \      / __`\      /'___\      /'___\      / __`\
-  \ \ \_\ \    /\ \ \ \    /\ \__/     /\ \__/     /\ \ \ \
-   \ \____/    \ \____/    \ \____\    \ \____\    \ \____/
-    \/___/      \/___/      \/____/     \/____/     \/___/
+Docco-XT is a fork of Docco that tackles some of the problems Docco is having
+with larger codebases.
 
+Therefore, an additional option to specify a base directory was added.
+When used, all documented files are displayed with paths relative
+to the given directory. This not only allows for documenting of multiple files
+having the same name, but also helps getting a better overview over the documented
+codebase.
 
-Docco is a quick-and-dirty, hundred-line-long, literate-programming-style
-documentation generator. For more information, see:
+Additionally, filenames can be searched when used in parallel layout:
 
+To search for a filename, press [ESC] or focus the search input manually.
+When you type in a filename or parts of it, you can navigate the filtered
+results with [↓] and [↑] and view the selected result with [ENTER].
+
+For more information on Docco, see:
 http://jashkenas.github.com/docco/
 
 Installation:
 
-  sudo npm install -g docco
+  sudo npm install -g docco-xt
 
-Usage: docco [options] FILES
+
+
+Usage: docco [options] files
 
   Options:
 
-    -h, --help             output usage information
-    -V, --version          output the version number
-    -l, --layout [layout]  choose a built-in layouts (parallel, linear)
-    -c, --css [file]       use a custom css file
-    -o, --output [path]    use a custom output path
-    -t, --template [file]  use a custom .jst template
-    -e, --extension [ext]  use the given file extension for all inputs
-    -L, --languages [file] use a custom languages.json
+    -h, --help              output usage information
+    -V, --version           output the version number
+    -L, --languages [file]  use a custom languages.json
+    -l, --layout [name]     choose a layout (parallel or linear)
+    -o, --output [path]     output to a given folder
+    -c, --css [file]        use a custom css file
+    -t, --template [file]   use a custom .jst template
+    -b, --basedir [path]    use a given folder as base directory for relative
+                            paths
+    -e, --extension [ext]   assume a file extension for all inputs

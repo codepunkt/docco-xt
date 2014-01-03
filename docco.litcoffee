@@ -184,20 +184,27 @@ and rendering it to the specified output path.
     write = (source, sections, config) ->
 
       destination = (file) ->
-        path.join(config.output, path.basename(file, path.extname(file)) + '.html')
+        if config.basedir
+          relative = path.dirname path.relative config.basedir, file
+          path.join(config.output, relative, path.basename(file, path.extname(file)) + '.html')
+        else
+          path.join(config.output, path.basename(file, path.extname(file)) + '.html')
 
 The **title** of the file is either the first heading in the prose, or the
 name of the source file.
 
+      dest = destination source
       first = marked.lexer(sections[0].docsText)[0]
       hasTitle = first and first.type is 'heading' and first.depth is 1
       title = if hasTitle then first.text else path.basename source
+      toOutput = path.relative path.dirname(dest), config.output
 
-      html = config.template {sources: config.sources, css: path.basename(config.css),
-        title, hasTitle, sections, path, destination,}
+      html = config.template { output: config.output, config, title, hasTitle, sections, path, destination, toOutput,
+        source }
 
-      console.log "docco: #{source} -> #{destination source}"
-      fs.writeFileSync destination(source), html
+      source = if config.basedir then path.relative(config.basedir, source) else source
+      console.log "docco: #{path.basename source} -> #{dest}"
+      fs.outputFileSync dest, html
 
 
 Configuration
@@ -211,6 +218,7 @@ user-specified options.
       output:     'docs'
       template:   null
       css:        null
+      basedir:    null
       extension:  null
       languages:  {}
 
@@ -229,13 +237,18 @@ source files for languages for which we have definitions.
         config.public       = path.join dir, 'public' if fs.existsSync path.join dir, 'public'
         config.template     = path.join dir, 'docco.jst'
         config.css          = options.css or path.join dir, 'docco.css'
+
       config.template = _.template fs.readFileSync(config.template).toString()
+      config.basedir = path.resolve config.basedir if config.basedir
 
       config.sources = options.args.filter((source) ->
         lang = getLanguage source, config
         console.warn "docco: skipped unknown type (#{path.basename source})" unless lang
         lang
       ).sort()
+
+      if config.basedir
+        config.sources = config.sources.map (source) -> path.resolve source
 
       config
 
@@ -306,10 +319,11 @@ Parse options using [Commander](https://github.com/visionmedia/commander.js).
       commander.version(version)
         .usage('[options] files')
         .option('-L, --languages [file]', 'use a custom languages.json', _.compose JSON.parse, fs.readFileSync)
-        .option('-l, --layout [name]',    'choose a layout (parallel, linear or classic)', c.layout)
+        .option('-l, --layout [name]',    'choose a layout (parallel or linear)', c.layout)
         .option('-o, --output [path]',    'output to a given folder', c.output)
         .option('-c, --css [file]',       'use a custom css file', c.css)
         .option('-t, --template [file]',  'use a custom .jst template', c.template)
+        .option('-b, --basedir [path]',   'use a given folder as base directory for relative paths', c.basedir)
         .option('-e, --extension [ext]',  'assume a file extension for all inputs', c.extension)
         .parse(args)
         .name = "docco"
