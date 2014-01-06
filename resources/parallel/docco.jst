@@ -29,16 +29,14 @@
       </ul>
     <% } %>
     <ul class="sections">
-        <% if (!hasTitle) { %>
-          <li id="title">
-              <div class="annotation">
-                  <h1><%= title %></h1>
-                  <% if (config.basedir) { %>
-                    <div><%= path.relative(config.basedir, source) %></div>
-                  <% } %>
-              </div>
-          </li>
-        <% } %>
+        <li id="title">
+            <div class="annotation">
+                <h1><%= title %></h1>
+                <% if (config.basedir) { %>
+                  <div><%= path.relative(config.basedir, source) %></div>
+                <% } %>
+            </div>
+        </li>
         <% for (var i=0, l=sections.length; i<l; i++) { %>
         <% var section = sections[i]; %>
         <li id="section-<%= i + 1 %>">

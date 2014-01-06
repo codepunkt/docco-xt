@@ -135,6 +135,9 @@
     dest = destination(source);
     first = marked.lexer(sections[0].docsText)[0];
     hasTitle = first && first.type === 'heading' && first.depth === 1;
+    if (hasTitle) {
+      sections.shift();
+    }
     title = hasTitle ? first.text : path.basename(source);
     toOutput = path.relative(path.dirname(dest), config.output);
     html = config.template({

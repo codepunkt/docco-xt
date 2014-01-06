@@ -196,6 +196,7 @@ name of the source file.
       dest = destination source
       first = marked.lexer(sections[0].docsText)[0]
       hasTitle = first and first.type is 'heading' and first.depth is 1
+      do sections.shift if hasTitle
       title = if hasTitle then first.text else path.basename source
       toOutput = path.relative path.dirname(dest), config.output
 
