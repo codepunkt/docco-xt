@@ -3,7 +3,7 @@
   "description":  "Generates static project documentation. A fork of docco with focus on larger projects",
   "keywords":     ["documentation", "docs", "generator", "coffeescript"],
   "author":       "Christoph Werner <gonsfx@googlemail.com>",
-  "version":      "0.1.1",
+  "version":      "0.1.2",
   "licenses": [{
     "type":       "MIT",
     "url":        "http://opensource.org/licenses/mit-license.php"
