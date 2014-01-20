@@ -102,7 +102,7 @@
     marked.setOptions({
       highlight: function(code, lang) {
         lang || (lang = language.name);
-        if (highlightjs.LANGUAGES[lang]) {
+        if (highlightjs.getLanguage(lang)) {
           return highlightjs.highlight(lang, code).value;
         } else {
           console.warn("docco: couldn't highlight code block with unknown language '" + lang + "' in " + source);
